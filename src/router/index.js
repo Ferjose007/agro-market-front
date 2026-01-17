@@ -3,16 +3,30 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Dashboard from '../views/Dashboard.vue'
+import DashboardSummary from '../views/farmer/DashboardSummary.vue'
+import MyFarm from '../views/farmer/MyFarm.vue'
 
 const routes = [
     { path: '/', name: 'Home', component: Home },
     { path: '/login', name: 'Login', component: Login },
     { path: '/register', name: 'Register', component: Register },
+
     {
         path: '/dashboard',
-        name: 'Dashboard',
         component: Dashboard,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true },
+        children: [
+            {
+                path: '',
+                name: 'DashboardSummary',
+                component: DashboardSummary,
+            },
+            {
+                path: 'my-farm',
+                name: 'MyFarm',
+                component: MyFarm,
+            }
+        ]
     },
 ]
 
