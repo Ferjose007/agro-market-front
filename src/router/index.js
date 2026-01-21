@@ -5,6 +5,9 @@ import Register from '../views/Register.vue'
 import Dashboard from '../views/Dashboard.vue'
 import DashboardSummary from '../views/farmer/DashboardSummary.vue'
 import MyFarm from '../views/farmer/MyFarm.vue'
+import MyProducts from '../views/farmer/MyProducts.vue'
+import CreateProduct from '../views/farmer/CreateProduct.vue'
+import EditProduct from '../views/farmer/EditProduct.vue'
 
 const routes = [
     { path: '/', name: 'Home', component: Home },
@@ -25,6 +28,21 @@ const routes = [
                 path: 'my-farm',
                 name: 'MyFarm',
                 component: MyFarm,
+            },
+            {
+                path: 'products',
+                name: 'MyProducts',
+                component: MyProducts,
+            },
+            {
+                path: 'products/create',
+                name: 'CreateProduct',
+                component: CreateProduct,
+            },
+            {
+                path: 'products/edit/:id',
+                name: 'EditProduct',
+                component: EditProduct,
             }
         ]
     },

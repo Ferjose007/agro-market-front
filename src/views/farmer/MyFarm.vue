@@ -16,6 +16,37 @@ const form = ref({
   location_lng: null
 });
 
+// --- 👇 ESTO ES LO QUE FALTABA: CARGAR DATOS AL INICIAR 👇 ---
+onMounted(async () => {
+  console.log("🚀 Iniciando carga de perfil de granja..."); // El "chivato"
+  isLoading.value = true;
+  
+  try {
+    // 1. Pedimos los datos al Backend
+    const response = await axios.get('http://127.0.0.1:8000/api/farm-profile');
+    
+    console.log("📦 Datos recibidos:", response.data); // Ver en consola qué llega
+
+    // 2. Si hay datos, rellenamos el formulario
+    if (response.data) {
+      form.value = {
+        farm_name: response.data.farm_name || '',
+        bio: response.data.bio || '',
+        whatsapp_number: response.data.whatsapp_number || '',
+        // Aseguramos que sean números para que las coordenadas funcionen bien
+        location_lat: response.data.location_lat ? parseFloat(response.data.location_lat) : null,
+        location_lng: response.data.location_lng ? parseFloat(response.data.location_lng) : null
+      };
+    }
+  } catch (error) {
+    console.error("Error cargando perfil:", error);
+    // No mostramos error al usuario aquí porque es normal que esté vacío la primera vez
+  } finally {
+    isLoading.value = false;
+  }
+});
+// -------------------------------------------------------------
+
 // Función para obtener GPS del navegador
 const getLocation = () => {
   if (navigator.geolocation) {

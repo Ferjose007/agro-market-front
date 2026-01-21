@@ -17,9 +17,11 @@ const auth = useAuthStore();
           📊 Resumen
         </router-link>
 
-        <a href="#" class="flex items-center gap-3 py-3 px-4 rounded transition-all hover:bg-green-700 opacity-50 cursor-not-allowed">
+        <router-link to="/dashboard/products" 
+          active-class="bg-green-600 shadow-md"
+          class="flex items-center gap-3 py-3 px-4 rounded transition-all hover:bg-green-700">
           📦 Mis Productos
-        </a>
+        </router-link>
 
         <router-link to="/dashboard/my-farm" 
           active-class="bg-green-600 shadow-md"
