@@ -52,7 +52,7 @@ onMounted(async () => {
 <template>
   <div class="p-6">
     <h2 class="text-2xl font-bold text-green-800 mb-6 flex items-center gap-2">
-      📊 Resumen de mi Fundo
+      📊 Resumen de mi Granja
     </h2>
 
     <div v-if="isLoading" class="text-center py-10">
