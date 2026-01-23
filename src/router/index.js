@@ -44,6 +44,8 @@ const routes = [
                 name: 'EditProduct',
                 component: EditProduct,
             }
+
+
         ]
     },
 ]
