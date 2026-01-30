@@ -17,18 +17,16 @@ export const useAuthStore = defineStore('auth', {
             try {
                 const response = await axios.post('http://127.0.0.1:8000/api/login', { email, password });
 
-                // Guardar token
                 this.token = response.data.token;
                 this.user = response.data.user;
                 localStorage.setItem('token', this.token);
 
-                // Configurar axios para futuras peticiones
                 axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
 
-                return true; // Éxito
+                return true;
             } catch (error) {
                 console.error(error);
-                return false; // Falló
+                return false;
             }
         },
 
@@ -38,7 +36,6 @@ export const useAuthStore = defineStore('auth', {
             localStorage.removeItem('token');
             delete axios.defaults.headers.common['Authorization'];
 
-            // Redirigir al login (necesitamos importar router en el componente, no aquí directamente para evitar ciclos)
             window.location.href = '/login';
         }
     }
