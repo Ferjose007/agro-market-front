@@ -18,14 +18,10 @@ const handleLogin = async () => {
   errorMessage.value = '';
 
   try {
-    // Ajusta la URL si es necesario
     const response = await axios.post('http://127.0.0.1:8000/api/login', form.value);
 
-    // Guardar token y usuario
     localStorage.setItem('token', response.data.token);
-    // Opcional: localStorage.setItem('user', JSON.stringify(response.data.user));
 
-    // Redirigir al Dashboard
     router.push('/dashboard/summary');
 
   } catch (error) {

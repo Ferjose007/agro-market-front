@@ -8,14 +8,14 @@ const showSuccessMessage = ref(false);
 
 // MODELO ADAPTADO A TU BASE DE DATOS
 const form = ref({
-  farm_name: '',       // Antes: name
-  bio: '',             // Antes: description
-  address: '',         // Nuevo
-  location_lat: '',    // Antes: latitude
-  location_lng: '',    // Antes: longitude
-  whatsapp_number: '', // Antes: contact_phone
-  contact_email: '',   // Nuevo
-  soil_type: ''        // Tuyo (Opcional si quieres mostrarlo)
+  farm_name: '',
+  bio: '',
+  address: '',
+  location_lat: '',
+  location_lng: '',
+  whatsapp_number: '',
+  contact_email: '',
+  soil_type: ''
 });
 
 // 1. Cargar datos
@@ -24,7 +24,6 @@ onMounted(async () => {
     const response = await axios.get('http://127.0.0.1:8000/api/farm-profile');
     if (response.data) {
       const data = response.data;
-      // Mapeamos los datos recibidos al formulario
       form.value = {
         farm_name: data.farm_name || '',
         bio: data.bio || '',

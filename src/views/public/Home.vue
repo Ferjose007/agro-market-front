@@ -6,14 +6,11 @@ import PublicNavbar from './components/PublicNavbar.vue';
 const products = ref([]);
 const isLoading = ref(true);
 
-// Función para obtener imagen (Si el producto no tiene foto real, ponemos una de ejemplo)
 const getProductImage = (categoryName) => {
-  // Truco: Usamos el nombre de la categoría para buscar imágenes relacionadas
   const keyword = categoryName ? categoryName.toLowerCase() : 'vegetables';
   return `https://source.unsplash.com/400x300/?${keyword},food`;
 };
 
-// Truco alternativo si Unsplash falla (LoremFlickr)
 const getFallbackImage = (id) => `https://loremflickr.com/400/300/vegetable,fruit?lock=${id}`;
 
 onMounted(async () => {

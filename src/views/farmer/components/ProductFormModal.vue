@@ -2,24 +2,18 @@
 import { ref, computed, watch, onMounted } from 'vue';
 import axios from 'axios';
 
-// Props
 const props = defineProps({
     isOpen: Boolean,
     productToEdit: Object
 });
 
-// Emits
 const emit = defineEmits(['close', 'refresh']);
 
-// Estados
 const categories = ref([]);
 const isSubmitting = ref(false);
 const showSuccess = ref(false);
 
-// --- SOLUCIÓN AL ERROR DE CSS ---
-// Definimos las clases aquí en lugar de usar @apply en el style
 const inputClass = "w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 transition p-2.5 border text-sm";
-// --------------------------------
 
 const form = ref({
     id: null,

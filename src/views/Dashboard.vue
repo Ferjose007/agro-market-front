@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from 'vue';
-import { useAuthStore } from '../stores/auth'; // Asegúrate que la ruta sea correcta
+import { useAuthStore } from '../stores/auth';
 
 const auth = useAuthStore();
-const isSidebarOpen = ref(false); // Controla si el menú está abierto en móvil
+const isSidebarOpen = ref(false);
 </script>
 
 <template>

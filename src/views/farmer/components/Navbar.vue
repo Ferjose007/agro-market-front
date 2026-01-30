@@ -4,14 +4,12 @@ import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 const router = useRouter();
-const isMenuOpen = ref(false); // Estado para abrir/cerrar menú móvil
+const isMenuOpen = ref(false);
 
-// Links de navegación (Fácil de editar)
 const links = [
     { name: '📊 Dashboard', path: '/dashboard/summary' },
     { name: '📦 Mis Productos', path: '/dashboard/products' },
     { name: '🏡 Mi Granja', path: '/dashboard/farm' },
-    // { name: '🚚 Pedidos', path: '/dashboard/orders' }, // Futuro
 ];
 
 const toggleMenu = () => {
@@ -20,12 +18,10 @@ const toggleMenu = () => {
 
 const logout = async () => {
     try {
-        // Intentamos hacer logout en backend
         await axios.post('http://127.0.0.1:8000/api/logout');
     } catch (e) {
         console.error(e);
     } finally {
-        // Borramos token y redirigimos SIEMPRE
         localStorage.removeItem('token');
         router.push('/login');
     }

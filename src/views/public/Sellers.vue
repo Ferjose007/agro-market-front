@@ -6,12 +6,9 @@ import PublicNavbar from './components/PublicNavbar.vue';
 const sellers = ref([]);
 const isLoading = ref(true);
 
-// Función para generar avatar aleatorio si no tienen foto
 const getAvatar = (name) => {
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=16a34a&color=fff&size=128&font-size=0.5`;
 };
-
-// Generar link de Google Maps
 const getMapLink = (lat, lng) => {
     if (!lat || !lng) return '#';
     return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;

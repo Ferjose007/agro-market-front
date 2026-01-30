@@ -4,22 +4,19 @@ import axios from 'axios';
 import { Doughnut } from 'vue-chartjs';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
-// 1. Registrar componentes del gráfico (Obligatorio para Chart.js)
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const isLoading = ref(true);
 const stats = ref(null);
 const hasFarm = ref(false);
 
-// 2. Configuración Reactiva del Gráfico
 const chartData = computed(() => {
-  // Si no hay datos aún, devolvemos vacío para evitar errores
   if (!stats.value?.chart_data) return { labels: [], datasets: [] };
 
   return {
     labels: stats.value.chart_data.map(item => item.label),
     datasets: [{
-      backgroundColor: ['#4ade80', '#facc15', '#f87171', '#60a5fa'], // Verde, Amarillo, Rojo, Azul
+      backgroundColor: ['#4ade80', '#facc15', '#f87171', '#60a5fa'],
       data: stats.value.chart_data.map(item => item.total)
     }]
   };
@@ -29,11 +26,10 @@ const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
-    legend: { position: 'right' } // Leyenda a la derecha
+    legend: { position: 'right' }
   }
 };
 
-// 3. Cargar datos al montar el componente
 onMounted(async () => {
   try {
     const response = await axios.get('http://127.0.0.1:8000/api/dashboard-summary');

@@ -1,11 +1,10 @@
 <script setup>
-// Props: Controlan si se muestra y si está cargando
+
 defineProps({
     isOpen: Boolean,
     isDeleting: Boolean
 });
 
-// Emits: Comunican al padre qué botón se presionó
 defineEmits(['close', 'confirm']);
 </script>
 

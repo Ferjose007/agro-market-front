@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-// Importamos AMBOS modales (Asegúrate de las rutas)
 import ProductFormModal from './components/ProductFormModal.vue';
 import DeleteModal from './components/DeleteModal.vue';
 
@@ -30,8 +29,8 @@ const openEditModal = (product) => {
 
 // Funciones Eliminar
 const confirmDelete = (id) => {
-  productToDeleteId.value = id; // Guardamos el ID que queremos borrar
-  isDeleteModalOpen.value = true; // Abrimos el modal rojo
+  productToDeleteId.value = id;
+  isDeleteModalOpen.value = true;
 };
 
 const executeDelete = async () => {
