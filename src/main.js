@@ -1,11 +1,10 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia' // 1. IMPORTAR PINIA
+import { createPinia } from 'pinia'
 import './style.css'
 import App from './App.vue'
 import router from './router'
 import axios from 'axios'
 
-// --- CONFIGURACIÓN DE AXIOS (Mantener igual) ---
 axios.defaults.baseURL = 'http://127.0.0.1:8000/api';
 
 axios.interceptors.request.use(config => {
@@ -27,11 +26,9 @@ axios.interceptors.response.use(
         return Promise.reject(error);
     }
 );
-// ----------------------------------------------
 
 const app = createApp(App)
 
-// 2. USAR PINIA (ANTES del router y del mount)
 app.use(createPinia())
 
 app.use(router)

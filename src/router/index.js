@@ -17,13 +17,13 @@ const routes = [
 
     {
         path: '/dashboard',
-        component: () => import('../views/Dashboard.vue'), // El Padre (Layout)
+        component: Dashboard,
         meta: { requiresAuth: true },
         children: [
             {
-                path: 'summary', // Se convierte en /dashboard/summary
+                path: 'Summary',
                 name: 'DashboardSummary',
-                component: () => import('../views/farmer/DashboardSummary.vue') // El contenido
+                component: DashboardSummary,
             },
             {
                 path: 'my-farm',
