@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import Home from '../views/public/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Dashboard from '../views/Dashboard.vue'
@@ -10,7 +10,8 @@ import CreateProduct from '../views/farmer/CreateProduct.vue'
 import EditProduct from '../views/farmer/EditProduct.vue'
 
 const routes = [
-    { path: '/', name: 'Home', component: Home },
+    { path: '/', name: 'Home', component: () => import('../views/public/Home.vue') },
+    { path: '/sellers', name: 'Sellers', component: () => import('../views/public/Sellers.vue') },
     { path: '/login', name: 'Login', component: Login },
     { path: '/register', name: 'Register', component: Register },
 
@@ -20,7 +21,7 @@ const routes = [
         meta: { requiresAuth: true },
         children: [
             {
-                path: '',
+                path: 'Summary',
                 name: 'DashboardSummary',
                 component: DashboardSummary,
             },
@@ -44,7 +45,6 @@ const routes = [
                 name: 'EditProduct',
                 component: EditProduct,
             }
-
 
         ]
     },
