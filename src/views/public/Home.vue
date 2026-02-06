@@ -2,20 +2,17 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import PublicNavbar from './components/PublicNavbar.vue';
+import { useCartStore } from '@/stores/cart';
 
+const cart = useCartStore();
 const products = ref([]);
 const isLoading = ref(true);
-
-const getProductImage = (categoryName) => {
-  const keyword = categoryName ? categoryName.toLowerCase() : 'vegetables';
-  return `https://source.unsplash.com/400x300/?${keyword},food`;
-};
 
 const getFallbackImage = (id) => `https://loremflickr.com/400/300/vegetable,fruit?lock=${id}`;
 
 onMounted(async () => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/market-products');
+    const response = await axios.get('/market-products');
     products.value = response.data;
   } catch (error) {
     console.error("Error cargando productos:", error);
@@ -122,7 +119,7 @@ onMounted(async () => {
                 </span>
               </div>
 
-              <button
+              <button @click="cart.addItem(product)"
                 class="bg-green-50 text-green-700 p-2 rounded-full hover:bg-green-600 hover:text-white transition">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor">

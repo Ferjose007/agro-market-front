@@ -1,42 +1,31 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
-export const useAuthStore = defineStore('auth', {
-    state: () => ({
-        token: localStorage.getItem('token') || null,
-        user: null
-    }),
+export const useAuthStore = defineStore('auth', () => {
+    const router = useRouter();
 
-    getters: {
-        isAuthenticated: (state) => !!state.token
-    },
+    const token = ref(localStorage.getItem('token') || null);
+    const user = ref(JSON.parse(localStorage.getItem('user')) || null);
 
-    actions: {
-        async login(email, password) {
-            try {
-                const response = await axios.post('http://127.0.0.1:8000/api/login', { email, password });
+    const isAuthenticated = computed(() => !!token.value);
 
-                this.token = response.data.token;
-                this.user = response.data.user;
-                localStorage.setItem('token', this.token);
+    const isFarmer = computed(() => user.value?.role === 'farmer');
 
-                axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
-
-                return true;
-            } catch (error) {
-                console.error(error);
-                return false;
-            }
-        },
-
-        logout() {
-            this.token = null;
-            this.user = null;
-            localStorage.removeItem('token');
-            delete axios.defaults.headers.common['Authorization'];
-
-            window.location.href = '/login';
-        }
+    function setAuthData(newToken, newUser) {
+        token.value = newToken;
+        user.value = newUser;
+        localStorage.setItem('token', newToken);
+        localStorage.setItem('user', JSON.stringify(newUser));
     }
+
+    function logout() {
+        token.value = null;
+        user.value = null;
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        router.push('/login');
+    }
+
+    return { token, user, isAuthenticated, isFarmer, setAuthData, logout };
 });

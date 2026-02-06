@@ -1,9 +1,12 @@
 <script setup>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 import axios from 'axios';
 
 const router = useRouter();
+const route = useRoute();
+const auth = useAuthStore();
 const form = ref({ name: '', email: '', password: '', password_confirmation: '', role: 'buyer' });
 const isLoading = ref(false);
 const errors = ref({});
@@ -11,15 +14,31 @@ const errors = ref({});
 const handleRegister = async () => {
   isLoading.value = true;
   errors.value = {};
-  try {
-    const response = await axios.post('http://127.0.0.1:8000/api/register', form.value);
-    localStorage.setItem('token', response.data.access_token);
-    localStorage.setItem('user', JSON.stringify(response.data.user));
 
-    if (form.value.role === 'farmer') router.push('/dashboard/summary');
-    else router.push('/');
+  try {
+    const response = await axios.post('/register', form.value);
+
+    auth.setAuthData(response.data.access_token, response.data.user);
+
+    if (route.query.redirect === 'checkout') {
+      router.push('/cart');
+    } else {
+      if (auth.isFarmer) {
+        router.push('/dashboard/summary');
+      } else {
+        router.push('/');
+      }
+    }
   } catch (error) {
-    if (error.response?.status === 422) errors.value = error.response.data.errors;
+    if (route.query.redirect === 'checkout') {
+      router.push('/cart');
+    } else {
+      if (form.value.role === 'farmer') {
+        router.push('/dashboard/summary');
+      } else {
+        router.push('/');
+      }
+    }
   } finally {
     isLoading.value = false;
   }
@@ -44,8 +63,11 @@ const handleRegister = async () => {
           </router-link>
           <h2 class="mt-4 text-3xl font-extrabold text-gray-900">Crea tu cuenta</h2>
           <p class="mt-2 text-sm text-gray-600">
-            ¿Ya tienes cuenta? <router-link to="/login" class="text-green-600 font-bold hover:underline">Ingresa
-              aquí</router-link>
+            ¿Ya tienes cuenta?
+            <router-link :to="route.query.redirect ? '/login?redirect=' + route.query.redirect : '/login'"
+              class="text-green-600 font-bold hover:underline">
+              Ingresa aquí
+            </router-link>
           </p>
         </div>
 

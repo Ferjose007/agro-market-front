@@ -1,9 +1,12 @@
 <script setup>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 import axios from 'axios';
 
 const router = useRouter();
+const route = useRoute();
+const auth = useAuthStore();
 const form = ref({ email: '', password: '' });
 const isLoading = ref(false);
 const errorMessage = ref('');
@@ -11,19 +14,24 @@ const errorMessage = ref('');
 const handleLogin = async () => {
   isLoading.value = true;
   errorMessage.value = '';
+
   try {
     const response = await axios.post('/login', form.value);
 
-    localStorage.setItem('token', response.data.access_token);
-    localStorage.setItem('user', JSON.stringify(response.data.user));
+    auth.setAuthData(response.data.access_token, response.data.user);
 
-    router.push('/dashboard/summary');
-  } catch (error) {
-    if (error.response?.status === 401) {
-      errorMessage.value = 'Credenciales incorrectas.';
+    if (route.query.redirect === 'checkout') {
+      router.push('/cart');
     } else {
-      errorMessage.value = 'Error de conexión.';
+      if (auth.isFarmer) {
+        router.push('/dashboard/summary');
+      } else {
+        router.push('/');
+      }
     }
+
+  } catch (error) {
+
   } finally {
     isLoading.value = false;
   }
@@ -50,7 +58,8 @@ const handleLogin = async () => {
           <h2 class="mt-4 text-3xl font-extrabold text-gray-900">¡Hola de nuevo!</h2>
           <p class="mt-2 text-sm text-gray-600">
             Bienvenido a AgroMarket.
-            <router-link to="/register" class="font-medium text-green-600 hover:text-green-500 hover:underline">
+            <router-link :to="route.query.redirect ? '/register?redirect=' + route.query.redirect : '/register'"
+              class="font-medium text-green-600 hover:text-green-500 hover:underline">
               Crear cuenta nueva
             </router-link>
           </p>

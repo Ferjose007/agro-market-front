@@ -10,6 +10,7 @@ const links = [
     { name: '📊 Dashboard', path: '/dashboard/summary' },
     { name: '📦 Mis Productos', path: '/dashboard/products' },
     { name: '🏡 Mi Granja', path: '/dashboard/farm' },
+    { name: '💰 Mis Ventas', path: '/dashboard/sales' },
 ];
 
 const toggleMenu = () => {

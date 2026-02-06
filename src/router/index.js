@@ -1,51 +1,92 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/public/Home.vue'
-import Login from '../views/Login.vue'
-import Register from '../views/Register.vue'
-import Dashboard from '../views/Dashboard.vue'
-import DashboardSummary from '../views/farmer/DashboardSummary.vue'
-import MyFarm from '../views/farmer/MyFarm.vue'
-import MyProducts from '../views/farmer/MyProducts.vue'
-import CreateProduct from '../views/farmer/CreateProduct.vue'
-import EditProduct from '../views/farmer/EditProduct.vue'
+import { useAuthStore } from '@/stores/auth';
 
 const routes = [
-    { path: '/', name: 'Home', component: () => import('../views/public/Home.vue') },
-    { path: '/sellers', name: 'Sellers', component: () => import('../views/public/Sellers.vue') },
-    { path: '/login', name: 'Login', component: Login },
-    { path: '/register', name: 'Register', component: Register },
-
+    // --- RUTAS PÚBLICAS ---
     {
-        path: '/dashboard',
-        component: Dashboard,
+        path: '/',
+        name: 'Home',
+        component: () => import('../views/public/Home.vue')
+    },
+    {
+        path: '/sellers',
+        name: 'Sellers',
+        component: () => import('../views/public/Sellers.vue')
+    },
+    {
+        path: '/cart',
+        name: 'Cart',
+        component: () => import('../views/public/Cart.vue')
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        component: () => import('../views/auth/Login.vue')
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: () => import('../views/auth/Register.vue')
+    },
+
+    // --- ZONA CLIENTE (COMPRADOR) ---
+    {
+        path: '/account',
+        component: () => import('../views/client/components/ClientNavbar.vue'),
         meta: { requiresAuth: true },
         children: [
             {
-                path: 'Summary',
+                path: 'profile',
+                name: 'ClientProfile',
+                component: () => import('../views/client/Profile.vue')
+            },
+            {
+                path: 'orders',
+                name: 'ClientOrders',
+                component: () => import('../views/client/Orders.vue')
+            }
+        ]
+    },
+
+    // --- ZONA GRANJERO (ADMINISTRACIÓN) ---
+    {
+        path: '/dashboard',
+        component: () => import('../views/Dashboard.vue'),
+        meta: {
+            requiresAuth: true,
+            role: 'farmer'
+        },
+        children: [
+            {
+                path: 'summary',
                 name: 'DashboardSummary',
-                component: DashboardSummary,
+                component: () => import('../views/farmer/DashboardSummary.vue'),
             },
             {
                 path: 'my-farm',
                 name: 'MyFarm',
-                component: MyFarm,
+                component: () => import('../views/farmer/MyFarm.vue'),
             },
             {
                 path: 'products',
                 name: 'MyProducts',
-                component: MyProducts,
+                component: () => import('../views/farmer/MyProducts.vue'),
             },
             {
                 path: 'products/create',
                 name: 'CreateProduct',
-                component: CreateProduct,
+                component: () => import('../views/farmer/CreateProduct.vue'),
             },
             {
                 path: 'products/edit/:id',
                 name: 'EditProduct',
-                component: EditProduct,
+                component: () => import('../views/farmer/EditProduct.vue'),
+            },
+            {
+                path: 'sales',
+                name: 'MySales',
+                component: () => import('../views/farmer/MySales.vue'),
             }
-
         ]
     },
 ]
@@ -55,13 +96,34 @@ const router = createRouter({
     routes
 })
 
+// --- GUARDIÁN DE NAVEGACIÓN (SEGURIDAD) ---
 router.beforeEach((to, from, next) => {
-    const token = localStorage.getItem('token');
-    if (to.meta.requiresAuth && !token) {
-        next('/login');
-    } else {
-        next();
+    // Inicializamos el store dentro del guard
+    const auth = useAuthStore();
+
+    // 1. Verificar si la ruta requiere autenticación
+    if (to.meta.requiresAuth && !auth.isAuthenticated) {
+        return next('/login');
     }
+
+    // 2. Verificar ROL (Protección del Dashboard)
+    // Si la ruta pide rol 'farmer' y el usuario NO lo es...
+    if (to.meta.role === 'farmer' && !auth.isFarmer) {
+        // ...lo expulsamos al Home
+        return next('/');
+    }
+
+    // 3. (Opcional) Evitar que usuarios logueados entren al Login
+    if ((to.path === '/login' || to.path === '/register') && auth.isAuthenticated) {
+        if (auth.isFarmer) {
+            return next('/dashboard/summary');
+        } else {
+            return next('/');
+        }
+    }
+
+    // Si pasa todas las pruebas, adelante
+    next();
 });
 
 export default router

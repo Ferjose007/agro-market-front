@@ -37,10 +37,17 @@ const isSidebarOpen = ref(false);
           <span>📦</span> Mis Productos
         </router-link>
 
+        <router-link to="/dashboard/sales" @click="isSidebarOpen = false"
+          active-class="bg-green-700 shadow-md border-r-4 border-green-400"
+          class="flex items-center gap-3 py-3 px-4 rounded transition-all hover:bg-green-700 hover:bg-opacity-50">
+          <span>💰</span> Mis Ventas
+        </router-link>
+
         <router-link to="/dashboard/my-farm" @click="isSidebarOpen = false"
           active-class="bg-green-700 shadow-md border-r-4 border-green-400"
           class="flex items-center gap-3 py-3 px-4 rounded transition-all hover:bg-green-700 hover:bg-opacity-50">
           <span>🚜</span> Mi Granja
+
         </router-link>
 
         <div class="flex items-center gap-3 py-3 px-4 rounded opacity-50 cursor-not-allowed">
