@@ -1,8 +1,13 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import PublicNavbar from './components/PublicNavbar.vue';
+
 import { useCartStore } from '@/stores/cart';
+
+import ModernNavbar from './components/ModernNavbar.vue';
+import ImpactHero from './components/ImpactHero.vue';
+import Footer from './components/Footer.vue';
+
 
 const cart = useCartStore();
 const products = ref([]);
@@ -25,32 +30,9 @@ onMounted(async () => {
 <template>
   <div class="min-h-screen bg-gray-50 font-sans">
 
-    <PublicNavbar />
+    <ModernNavbar />
 
-    <header class="relative bg-green-900 h-[500px] flex items-center justify-center text-center px-4 overflow-hidden">
-      <div
-        class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1488459716781-31db52582fe9?q=80&w=2070')] bg-cover bg-center opacity-40">
-      </div>
-
-      <div class="relative z-10 max-w-3xl mx-auto space-y-6">
-        <span class="bg-green-500 text-white px-4 py-1 rounded-full text-sm font-bold uppercase tracking-wide">
-          Directo del Campo
-        </span>
-        <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight">
-          Alimentos frescos, <br /> sin intermediarios.
-        </h1>
-        <p class="text-lg text-green-100 max-w-2xl mx-auto">
-          Conectamos a agricultores locales directamente con tu mesa. Precios justos, calidad garantizada y apoyo al
-          campo.
-        </p>
-        <div class="flex gap-4 justify-center pt-4">
-          <a href="#catalogo"
-            class="bg-white text-green-800 px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition shadow-xl">
-            Ver Productos
-          </a>
-        </div>
-      </div>
-    </header>
+    <ImpactHero />
 
     <main id="catalogo" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
@@ -60,11 +42,12 @@ onMounted(async () => {
           <p class="text-gray-500 mt-2">Recién cosechados por nuestros agricultores asociados.</p>
         </div>
         <div class="hidden md:flex gap-2">
-          <button class="px-4 py-2 bg-green-600 text-white rounded-full text-sm font-medium">Todos</button>
           <button
-            class="px-4 py-2 bg-white border border-gray-200 text-gray-600 rounded-full text-sm font-medium hover:border-green-500">Frutas</button>
+            class="px-4 py-2 bg-agro-primary text-white rounded-full text-sm font-medium hover:bg-agro-primary-dark transition">Todos</button>
           <button
-            class="px-4 py-2 bg-white border border-gray-200 text-gray-600 rounded-full text-sm font-medium hover:border-green-500">Verduras</button>
+            class="px-4 py-2 bg-white border border-gray-200 text-gray-600 rounded-full text-sm font-medium hover:border-agro-primary hover:text-agro-primary transition">Frutas</button>
+          <button
+            class="px-4 py-2 bg-white border border-gray-200 text-gray-600 rounded-full text-sm font-medium hover:border-agro-primary hover:text-agro-primary transition">Verduras</button>
         </div>
       </div>
 
@@ -88,7 +71,7 @@ onMounted(async () => {
               class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Producto">
 
             <span v-if="product.farming_type === 'Orgánico'"
-              class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded shadow">
+              class="absolute top-3 left-3 bg-agro-secondary text-white text-xs font-bold px-2 py-1 rounded shadow">
               🌿 Orgánico
             </span>
           </div>
@@ -96,7 +79,7 @@ onMounted(async () => {
           <div class="p-5 flex-1 flex flex-col">
             <div class="flex justify-between items-start">
               <div>
-                <p class="text-xs text-green-600 font-semibold uppercase tracking-wider mb-1">
+                <p class="text-xs text-agro-primary font-semibold uppercase tracking-wider mb-1">
                   {{ product.category?.name || 'Varios' }}
                 </p>
                 <h3 class="font-bold text-gray-900 text-lg leading-tight">{{ product.name }}</h3>
@@ -111,7 +94,7 @@ onMounted(async () => {
             <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
               <div class="flex items-center gap-2">
                 <div
-                  class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-xs font-bold text-green-700">
+                  class="w-6 h-6 rounded-full bg-agro-cream flex items-center justify-center text-xs font-bold text-agro-primary-dark">
                   {{ product.farm_profile?.farm_name?.charAt(0) || 'A' }}
                 </div>
                 <span class="text-xs font-medium text-gray-500 truncate max-w-[100px]">
@@ -119,8 +102,10 @@ onMounted(async () => {
                 </span>
               </div>
 
-              <button @click="cart.addItem(product)"
-                class="bg-green-50 text-green-700 p-2 rounded-full hover:bg-green-600 hover:text-white transition">
+
+              <button
+                class="bg-green-50 text-agro-primary p-2 rounded-full hover:bg-agro-primary hover:text-white transition">
+
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -136,9 +121,7 @@ onMounted(async () => {
 
     </main>
 
-    <footer class="bg-gray-900 text-white py-10 text-center">
-      <p class="text-gray-500">© 2026 AgroMarket. Todos los derechos reservados.</p>
-    </footer>
+    <Footer />
 
   </div>
 </template>

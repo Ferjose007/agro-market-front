@@ -11,13 +11,36 @@
                 alt="Campo agrícola"
             />
             <!-- degradado oscuro para contraste -->
-            <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-black/90"></div>
+            <!-- <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-black/90"></div> -->
+            <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/90 backdrop-blur-[2px]"></div>
         </div>
 
         <!-- elementos decorativos -->
-        <div class="absolute inset-0 z-0 opacity-30">
+        <div class="absolute inset-0 z-0 opacity-30 pointer-events-none">
             <div class="absolute top-20 left-10 w-24 h-24 bg-green-400 rounded-full blur-3xl animate-pulse"></div>
             <div class="absolute bottom-20 right-10 w-32 h-32 bg-yellow-400 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        </div>
+
+        <!-- Efecto de gotas de agua  -->
+        <div class="absolute inset-y-0 left-0 w-48 z-20 pointer-events-none overflow-hidden hidden md:block">
+            <div class="relative w-full h-full opacity-70">
+                 <!-- Gotas grandes -->
+                <div class="absolute top-[15%] left-[10%] w-6 h-8 rounded-[40%_60%_70%_30%/40%_50%_60%_50%] bg-white/10 shadow-[inset_3px_3px_6px_rgba(255,255,255,0.4),inset_-3px_-3px_6px_rgba(0,0,0,0.3),3px_3px_6px_rgba(0,0,0,0.2)] backdrop-blur-[2px]"></div>
+                <div class="absolute top-[28%] left-[25%] w-8 h-10 rounded-[50%_50%_30%_70%/60%_40%_70%_30%] bg-white/10 shadow-[inset_4px_4px_8px_rgba(255,255,255,0.4),inset_-4px_-4px_8px_rgba(0,0,0,0.3),4px_4px_8px_rgba(0,0,0,0.2)] backdrop-blur-[2px]"></div>
+                <div class="absolute top-[48%] left-[5%] w-5 h-5 rounded-full bg-white/10 shadow-[inset_3px_3px_6px_rgba(255,255,255,0.4),inset_-3px_-3px_6px_rgba(0,0,0,0.3),3px_3px_6px_rgba(0,0,0,0.2)] backdrop-blur-[2px]"></div>
+                <div class="absolute top-[65%] left-[15%] w-10 h-12 rounded-[60%_40%_50%_50%/50%_60%_40%_50%] bg-white/10 shadow-[inset_4px_4px_8px_rgba(255,255,255,0.4),inset_-4px_-4px_8px_rgba(0,0,0,0.3),4px_4px_8px_rgba(0,0,0,0.2)] backdrop-blur-[2px]"></div>
+                <div class="absolute top-[82%] left-[8%] w-7 h-9 rounded-[45%_55%_55%_45%] bg-white/10 shadow-[inset_3px_3px_6px_rgba(255,255,255,0.4),inset_-3px_-3px_6px_rgba(0,0,0,0.3),3px_3px_6px_rgba(0,0,0,0.2)] backdrop-blur-[2px]"></div>
+            </div>
+        </div>
+
+        <div class="absolute inset-y-0 right-0 w-48 z-20 pointer-events-none overflow-hidden hidden md:block">
+             <div class="relative w-full h-full opacity-70">
+                 <!-- Gotas grandes lado derecho -->
+                <div class="absolute top-[12%] right-[15%] w-8 h-8 rounded-full bg-white/10 shadow-[inset_4px_4px_8px_rgba(255,255,255,0.4),inset_-4px_-4px_8px_rgba(0,0,0,0.3),4px_4px_8px_rgba(0,0,0,0.2)] backdrop-blur-[2px]"></div>
+                <div class="absolute top-[32%] right-[20%] w-7 h-10 rounded-[40%_60%_70%_30%/40%_50%_60%_50%] bg-white/10 shadow-[inset_4px_4px_8px_rgba(255,255,255,0.4),inset_-4px_-4px_8px_rgba(0,0,0,0.3),4px_4px_8px_rgba(0,0,0,0.2)] backdrop-blur-[2px]"></div>
+                <div class="absolute top-[52%] right-[5%] w-9 h-11 rounded-[30%_70%_70%_30%/30%_30%_70%_70%] bg-white/10 shadow-[inset_4px_4px_8px_rgba(255,255,255,0.4),inset_-4px_-4px_8px_rgba(0,0,0,0.3),4px_4px_8px_rgba(0,0,0,0.2)] backdrop-blur-[2px]"></div>
+                <div class="absolute top-[78%] right-[18%] w-6 h-7 rounded-[50%_50%_40%_60%/60%_40%_50%_50%] bg-white/10 shadow-[inset_3px_3px_6px_rgba(255,255,255,0.4),inset_-3px_-3px_6px_rgba(0,0,0,0.3),3px_3px_6px_rgba(0,0,0,0.2)] backdrop-blur-[2px]"></div>
+            </div>
         </div>
 
         <div class="relative z-10 max-w-5xl mx-auto px-4 text-center space-y-8 md:space-y-12 flex flex-col justify-center h-full pt-16 md:pt-24">
