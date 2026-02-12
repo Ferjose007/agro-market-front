@@ -1,1 +1,16 @@
 @import "tailwindcss";
+
+@theme {
+    --color-agro-primary: #316323;
+    /* verde botones */
+    --color-agro-primary-dark: #2C5C2C;
+    /* verde oscuro hover y texto */
+    --color-agro-secondary: #86A639;
+    /* verde claro resaltar */
+    --color-agro-cream: #FDECCA;
+    /* crema fondos */
+
+    /* colores extra del degradado hero */
+    --color-agro-lime-strong: #65a30d;
+    --color-agro-lime-light: #d9f99d;
+}
