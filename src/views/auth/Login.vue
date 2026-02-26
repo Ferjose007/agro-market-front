@@ -119,8 +119,10 @@ const handleLogin = async () => {
                   placeholder="••••••••">
               </div>
               <div class="flex justify-end mt-2">
-                <a href="#" class="text-sm font-medium text-agro-primary hover:text-agro-primary-dark">¿Olvidaste tu
-                  contraseña?</a>
+                <router-link to="/forgot-password"
+                  class="text-sm font-bold text-agro-primary hover:text-green-800 hover:underline transition">
+                  ¿Olvidaste tu contraseña?
+                </router-link>
               </div>
             </div>
           </div>
