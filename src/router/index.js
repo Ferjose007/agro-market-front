@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth';
+import FAQ from '@/views/public/FAQ.vue';
+import Contact from '@/views/public/Contact.vue';
 
 const routes = [
     // --- RUTAS PÚBLICAS ---
@@ -28,20 +30,29 @@ const routes = [
         name: 'Register',
         component: () => import('../views/auth/Register.vue')
     },
-
+    {
+        path: '/faq',
+        name: 'FAQ',
+        component: FAQ
+    },
+    {
+        path: '/contact',
+        name: 'Contact',
+        component: Contact
+    },
     // --- ZONA CLIENTE (COMPRADOR) ---
     {
-        path: '/account',
+        path: '/client',
         component: () => import('../views/client/components/ClientNavbar.vue'),
         meta: { requiresAuth: true },
         children: [
             {
-                path: 'profile',
+                path: 'profile', // Se accede como /client/profile
                 name: 'ClientProfile',
                 component: () => import('../views/client/Profile.vue')
             },
             {
-                path: 'orders',
+                path: 'orders', // Se accede como /client/orders
                 name: 'ClientOrders',
                 component: () => import('../views/client/Orders.vue')
             }
@@ -98,31 +109,23 @@ const router = createRouter({
 
 // --- GUARDIÁN DE NAVEGACIÓN (SEGURIDAD) ---
 router.beforeEach((to, from, next) => {
-    // Inicializamos el store dentro del guard
     const auth = useAuthStore();
 
-    // 1. Verificar si la ruta requiere autenticación
     if (to.meta.requiresAuth && !auth.isAuthenticated) {
         return next('/login');
     }
 
-    // 2. Verificar ROL (Protección del Dashboard)
-    // Si la ruta pide rol 'farmer' y el usuario NO lo es...
     if (to.meta.role === 'farmer' && !auth.isFarmer) {
-        // ...lo expulsamos al Home
         return next('/');
     }
-
-    // 3. (Opcional) Evitar que usuarios logueados entren al Login
     if ((to.path === '/login' || to.path === '/register') && auth.isAuthenticated) {
         if (auth.isFarmer) {
             return next('/dashboard/summary');
         } else {
-            return next('/');
+            return next('/client/profile');
         }
     }
 
-    // Si pasa todas las pruebas, adelante
     next();
 });
 

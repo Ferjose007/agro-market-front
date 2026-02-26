@@ -14,3 +14,20 @@
     --color-agro-lime-strong: #65a30d;
     --color-agro-lime-light: #d9f99d;
 }
+
+@keyframes bounce-short {
+
+    0%,
+    100% {
+        transform: translate(25%, -25%);
+    }
+
+    50% {
+        transform: translate(25%, -35%);
+    }
+}
+
+.animate-bounce-short {
+    animation: bounce-short 0.5s ease-in-out 2;
+    /* Rebota 2 veces y para */
+}

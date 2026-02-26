@@ -1,28 +1,40 @@
 <script setup>
-
-import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
-import axios from 'axios';
-
 const auth = useAuthStore();
-const isEditing = ref(false);
-const isLoading = ref(false);
-const form = ref({ name: auth.user?.name || '', email: auth.user?.email || '' });
-
 </script>
 
 <template>
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div class="px-6 py-6 border-b border-gray-100 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-gray-800">Mis Datos Personales</h1>
-            <button @click="isEditing = !isEditing" class="text-green-600 font-medium hover:underline">
-                {{ isEditing ? 'Cancelar' : 'Editar' }}
-            </button>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden p-8">
+
+        <div class="flex items-center gap-6 mb-8">
+            <div
+                class="w-24 h-24 rounded-full bg-agro-primary text-white flex items-center justify-center text-4xl font-bold border-4 border-green-50 shadow-sm">
+                {{ auth.user?.name?.charAt(0).toUpperCase() || 'U' }}
+            </div>
+
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900">{{ auth.user?.name }}</h2>
+                <p class="text-gray-500">{{ auth.user?.email }}</p>
+                <span class="mt-2 inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-bold">
+                    Cliente Activo
+                </span>
+            </div>
         </div>
 
-        <div class="p-6">
-            <form @submit.prevent="updateProfile"> </form>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo</label>
+                <div class="p-3 bg-gray-50 rounded-lg border border-gray-200 text-gray-800">
+                    {{ auth.user?.name }}
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
+                <div class="p-3 bg-gray-50 rounded-lg border border-gray-200 text-gray-800">
+                    {{ auth.user?.email }}
+                </div>
+            </div>
         </div>
+
     </div>
-
 </template>
