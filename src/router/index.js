@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth';
 import FAQ from '@/views/public/FAQ.vue';
 import Contact from '@/views/public/Contact.vue';
-import ForgotPassword from '../views/auth/ForgotPassword.vue';
 import ResetPassword from '../views/auth/ResetPassword.vue';
 
 const routes = [
@@ -41,12 +40,6 @@ const routes = [
         path: '/contact',
         name: 'Contact',
         component: Contact
-    },
-    {
-        path: '/forgot-password',
-        name: 'ForgotPassword',
-        component: ForgotPassword,
-        meta: { guest: true } // Solo accesible si NO estás logueado
     },
     {
         path: '/reset-password', // Laravel enviará el token como Query Param (?token=...)

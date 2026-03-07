@@ -5,6 +5,7 @@ import { useAuthStore } from '@/stores/auth';
 import axios from 'axios';
 // usando ruta relativa para compatibilidad
 import logoUrl from '@/assets/logo-agromarket.png';
+import ForgotPasswordModal from './components/ForgotPasswordModal.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -12,6 +13,7 @@ const auth = useAuthStore();
 const form = ref({ email: '', password: '' });
 const isLoading = ref(false);
 const errorMessage = ref('');
+const showForgotModal = ref(false);
 
 const handleLogin = async () => {
   isLoading.value = true;
@@ -54,11 +56,9 @@ const handleLogin = async () => {
 <template>
   <div class="min-h-screen flex bg-white font-sans">
 
-    <!-- lado izquierdo formulario -->
     <div class="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white z-10 relative">
       <div class="w-full max-w-lg space-y-8">
 
-        <!-- cabecera y logo -->
         <div class="flex justify-between items-center mb-10">
           <router-link to="/"
             class="text-gray-500 hover:text-agro-primary transition flex items-center gap-2 font-bold group">
@@ -74,21 +74,24 @@ const handleLogin = async () => {
           <img :src="logoUrl" alt="AgroMarket Logo" class="h-14 w-auto object-contain" />
         </div>
 
-        <!-- bienvenida -->
         <div class="space-y-2">
-          <h2 class="text-4xl font-black text-gray-900 tracking-tight">¡Hola de nuevo! 👋</h2>
+          <h2 class="text-4xl font-black text-gray-900 tracking-tight flex items-center gap-3">
+            ¡Hola de nuevo!
+            <svg class="w-9 h-9 text-agro-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </h2>
           <p class="text-lg text-gray-500">
             Bienvenido a AgroMarket.
 
             <router-link to="/register"
               class="font-bold text-agro-primary hover:text-agro-primary-dark hover:underline transition">
-
               Crear cuenta nueva
             </router-link>
           </p>
         </div>
 
-        <!-- formulario -->
         <form class="mt-8 space-y-6" @submit.prevent="handleLogin">
           <div class="space-y-5">
             <div>
@@ -119,10 +122,10 @@ const handleLogin = async () => {
                   placeholder="••••••••">
               </div>
               <div class="flex justify-end mt-2">
-                <router-link to="/forgot-password"
+                <button type="button" @click="showForgotModal = true"
                   class="text-sm font-bold text-agro-primary hover:text-green-800 hover:underline transition">
                   ¿Olvidaste tu contraseña?
-                </router-link>
+                </button>
               </div>
             </div>
           </div>
@@ -155,7 +158,6 @@ const handleLogin = async () => {
       </div>
     </div>
 
-    <!-- lado derecho imagen -->
     <div class="hidden lg:block lg:w-1/2 relative">
       <img class="absolute inset-0 h-full w-full object-cover"
         src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=2070" alt="Campo">
@@ -166,4 +168,7 @@ const handleLogin = async () => {
       </div>
     </div>
   </div>
+
+  <ForgotPasswordModal v-if="showForgotModal" @close="showForgotModal = false" />
+
 </template>

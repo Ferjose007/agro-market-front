@@ -3,9 +3,12 @@ import { ref } from 'vue';
 import ModernNavbar from './components/ModernNavbar.vue';
 import Footer from './components/Footer.vue';
 
+// Hemos limpiado los nombres de las categorías y añadido rutas SVG (Heroicons)
 const faqs = ref([
     {
-        category: '📦 Envíos y Cobertura',
+        category: 'Envíos y Cobertura',
+        // Icono de Caja (Box)
+        icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4',
         items: [
             {
                 question: '¿A qué distritos realizan envíos?',
@@ -25,7 +28,9 @@ const faqs = ref([
         ]
     },
     {
-        category: '💳 Pagos y Seguridad',
+        category: 'Pagos y Seguridad',
+        // Icono de Tarjeta de Crédito
+        icon: 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z',
         items: [
             {
                 question: '¿Qué métodos de pago aceptan?',
@@ -40,7 +45,9 @@ const faqs = ref([
         ]
     },
     {
-        category: '🥬 Productos y Garantía',
+        category: 'Productos y Garantía',
+        // Icono de Escudo/Sello de Calidad
+        icon: 'M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z',
         items: [
             {
                 question: '¿Los productos son orgánicos?',
@@ -66,7 +73,7 @@ const toggleFaq = (categoryIndex, itemIndex) => {
 
         <ModernNavbar />
 
-        <div class="bg-agro-primary text-white py-12 px-4 text-center pt-32 pb-12 relative overflow-hidden">
+        <div class="bg-agro-primary text-white py-12 px-4 text-center pt-32 pb-12 relative overflow-hidden shadow-md">
             <div class="absolute top-0 left-0 w-full h-full bg-white/5 opacity-20 pointer-events-none">
                 <svg class="absolute right-0 bottom-0 w-64 h-64 text-white/10" fill="currentColor" viewBox="0 0 24 24">
                     <path
@@ -74,7 +81,14 @@ const toggleFaq = (categoryIndex, itemIndex) => {
                 </svg>
             </div>
 
-            <h1 class="text-4xl font-black mb-3 tracking-tight drop-shadow-md relative z-10">Preguntas Frecuentes 🤔
+            <h1
+                class="text-4xl font-black mb-3 tracking-tight drop-shadow-md relative z-10 flex justify-center items-center gap-3">
+                Preguntas Frecuentes
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                    </path>
+                </svg>
             </h1>
             <p class="text-agro-cream/90 max-w-2xl mx-auto text-lg font-medium relative z-10">
                 Resolvemos tus dudas para que compres con total confianza.
@@ -87,7 +101,14 @@ const toggleFaq = (categoryIndex, itemIndex) => {
 
                 <div v-for="(category, catIndex) in faqs" :key="catIndex">
 
-                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2 px-2">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-4 px-2">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center text-agro-primary shadow-sm">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    :d="category.icon"></path>
+                            </svg>
+                        </div>
                         {{ category.category }}
                     </h2>
 
@@ -127,7 +148,12 @@ const toggleFaq = (categoryIndex, itemIndex) => {
                     <p class="text-gray-600 mb-6">Estamos aquí para ayudarte. Escríbenos directamente.</p>
                     <a href="https://wa.me/51999999999" target="_blank"
                         class="inline-flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-full font-bold hover:bg-green-700 transition shadow-lg hover:shadow-green-200">
-                        <span>💬</span> Chatear por WhatsApp
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                            </path>
+                        </svg>
+                        Chatear por WhatsApp
                     </a>
                 </div>
 

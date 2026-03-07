@@ -3,7 +3,7 @@ import { useCartStore } from '@/stores/cart';
 import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
 import ModernNavbar from './components/ModernNavbar.vue';
-import Footer from './components/Footer.vue'; // Assuming you have a Footer component
+import Footer from './components/Footer.vue';
 
 const cart = useCartStore();
 const auth = useAuthStore();
@@ -30,21 +30,47 @@ const handleCheckout = () => {
 
         <ModernNavbar />
 
-        <div class="bg-agro-primary text-white py-12 px-4 text-center pt-32 pb-16">
-            <h1 class="text-4xl font-black mb-3 tracking-tight drop-shadow-md">Tu Carrito de Compras 🛒</h1>
-            <p class="text-agro-cream/90 max-w-2xl mx-auto text-lg font-medium">
+        <div class="bg-agro-primary text-white py-12 px-4 text-center pt-32 pb-16 relative overflow-hidden">
+            <div class="absolute inset-0 bg-white/5 opacity-20 pointer-events-none">
+                <svg class="absolute right-10 top-10 w-32 h-32 text-white/10 transform -rotate-12" fill="currentColor"
+                    viewBox="0 0 24 24">
+                    <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                </svg>
+            </div>
+
+            <h1
+                class="text-4xl font-black mb-3 tracking-tight drop-shadow-md relative z-10 flex justify-center items-center gap-3">
+                Tu Carrito de Compras
+                <svg class="w-9 h-9 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                    </path>
+                </svg>
+            </h1>
+            <p class="text-agro-cream/90 max-w-2xl mx-auto text-lg font-medium relative z-10">
                 Revisa tus productos frescos antes de finalizar la compra.
             </p>
         </div>
 
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-1 w-full -mt-8">
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-1 w-full -mt-8 relative z-20">
+
             <div v-if="cart.items.length === 0"
-                class="text-center py-20 bg-white rounded-2xl shadow-sm border border-gray-100">
-                <div class="text-6xl mb-4">🛍️</div>
+                class="text-center py-20 bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center">
+                <div
+                    class="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center text-gray-300 mb-6 border border-gray-100 shadow-inner">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                </div>
                 <h3 class="text-xl font-bold text-gray-800">Tu carrito está vacío</h3>
-                <p class="text-gray-500 mb-6 mt-2">Parece que aún no has agregado productos frescos.</p>
+                <p class="text-gray-500 mb-8 mt-2">Parece que aún no has agregado productos frescos.</p>
                 <router-link to="/"
-                    class="bg-green-600 text-white px-6 py-3 rounded-full font-bold hover:bg-green-700 transition shadow-md">
+                    class="bg-green-600 text-white px-8 py-3.5 rounded-full font-bold hover:bg-green-700 transition shadow-lg hover:shadow-green-200 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
                     Ir al Mercado
                 </router-link>
             </div>
@@ -102,7 +128,8 @@ const handleCheckout = () => {
                             </div>
                             <div class="flex justify-between">
                                 <span>Envío</span>
-                                <span class="text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded-md">Gratis</span>
+                                <span
+                                    class="text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded-md border border-green-100">Gratis</span>
                             </div>
                         </div>
 
@@ -114,11 +141,23 @@ const handleCheckout = () => {
 
                         <button @click="handleCheckout"
                             class="w-full bg-green-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-green-700 transition shadow-lg shadow-green-200 flex items-center justify-center gap-2 transform active:scale-95">
-                            <span>💳</span> Confirmar Compra
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
+                                </path>
+                            </svg>
+                            Confirmar Compra
                         </button>
 
-                        <p class="text-xs text-center text-gray-400 mt-4 opacity-70">Transacciones seguras y
-                            encriptadas.</p>
+                        <p
+                            class="text-xs text-center text-gray-400 mt-4 opacity-70 flex items-center justify-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                                </path>
+                            </svg>
+                            Transacciones seguras y encriptadas.
+                        </p>
                     </div>
                 </div>
 

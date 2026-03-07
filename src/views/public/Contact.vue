@@ -45,7 +45,15 @@ const handleSubmit = () => {
                 </svg>
             </div>
 
-            <h1 class="text-4xl font-black mb-3 tracking-tight drop-shadow-md relative z-10">Contáctanos 💬</h1>
+            <h1
+                class="text-4xl font-black mb-3 tracking-tight drop-shadow-md relative z-10 flex justify-center items-center gap-3">
+                Contáctanos
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
+                    </path>
+                </svg>
+            </h1>
             <p class="text-agro-cream/90 max-w-2xl mx-auto text-lg font-medium relative z-10">
                 Estamos aquí para ayudarte. Escríbenos y te responderemos en menos de 24 horas.
             </p>
@@ -101,7 +109,7 @@ const handleSubmit = () => {
 
                         <button type="submit" :disabled="isSubmitting"
                             class="w-full bg-agro-primary text-white font-bold py-4 rounded-xl hover:bg-green-800 transition shadow-lg hover:shadow-green-200 disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center gap-2">
-                            <span v-if="isSubmitting">
+                            <span v-if="isSubmitting" class="flex items-center gap-2">
                                 <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
@@ -112,11 +120,21 @@ const handleSubmit = () => {
                                 </svg>
                                 Enviando...
                             </span>
-                            <span v-else>🚀 Enviar Mensaje</span>
+                            <span v-else class="flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                                </svg>
+                                Enviar Mensaje
+                            </span>
                         </button>
 
                         <div v-if="showSuccess"
-                            class="bg-green-50 text-green-700 p-4 rounded-lg text-center font-bold border border-green-100 animate-fade-in-up">
+                            class="bg-green-50 text-green-700 p-4 rounded-lg text-center font-bold border border-green-100 animate-fade-in-up flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
                             ¡Mensaje enviado con éxito! Te contactaremos pronto.
                         </div>
 
@@ -131,8 +149,14 @@ const handleSubmit = () => {
                         <div class="space-y-6">
                             <div class="flex items-start gap-4">
                                 <div
-                                    class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-agro-primary text-xl flex-shrink-0">
-                                    📍
+                                    class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-agro-primary flex-shrink-0">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                        </path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
                                 </div>
                                 <div>
                                     <p class="font-bold text-gray-800">Oficina Principal</p>
@@ -143,21 +167,29 @@ const handleSubmit = () => {
 
                             <div class="flex items-start gap-4">
                                 <div
-                                    class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-agro-primary text-xl flex-shrink-0">
-                                    ✉️
+                                    class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-agro-primary flex-shrink-0">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                        </path>
+                                    </svg>
                                 </div>
                                 <div>
                                     <p class="font-bold text-gray-800">Correo Electrónico</p>
-                                    <a href="mailto:hola@agromarket.com"
-                                        class="text-green-600 hover:underline">hola@agromarket.com</a>
+                                    <a href="mailto:soporte@agromarket.com"
+                                        class="text-green-600 hover:underline">soporte@agromarket.com</a>
                                     <p class="text-gray-600 text-sm">Soporte 24/7</p>
                                 </div>
                             </div>
 
                             <div class="flex items-start gap-4">
                                 <div
-                                    class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-agro-primary text-xl flex-shrink-0">
-                                    📱
+                                    class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-agro-primary flex-shrink-0">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z">
+                                        </path>
+                                    </svg>
                                 </div>
                                 <div>
                                     <p class="font-bold text-gray-800">WhatsApp / Teléfono</p>
