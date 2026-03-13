@@ -1,12 +1,11 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 
 const route = useRoute();
 const router = useRouter();
 
-// Datos del formulario
 const form = ref({
     token: '',
     email: '',
@@ -15,38 +14,80 @@ const form = ref({
 });
 
 const status = ref('');
-const isLoading = ref(false);
+const isSaving = ref(false); // Para el botón de "Guardar"
 
-// Al cargar, extraemos token y email de la URL
+// --- Animación de Redirección ---
+const isRedirecting = ref(false);
+const loadingProgress = ref(0);
+const currentLoadingText = ref('');
+let progressInterval = null;
+let textInterval = null;
+
+const redirectTexts = [
+    'Verificando credenciales...',
+    'Asegurando tu sesión...',
+    'Redirigiendo al inicio...'
+];
+
+const startRedirection = () => {
+    isRedirecting.value = true;
+    loadingProgress.value = 0;
+
+    // Cambiar el texto 3 veces durante los 3 segundos
+    let textIndex = 0;
+    currentLoadingText.value = redirectTexts[0];
+    textInterval = setInterval(() => {
+        if (textIndex < redirectTexts.length - 1) {
+            textIndex++;
+            currentLoadingText.value = redirectTexts[textIndex];
+        }
+    }, 1000); // Cambia cada 1 segundo
+
+    // Llenar la barra de 0 a 100 en exactamente 3 segundos (3000ms)
+    // 3000ms / 100 pasos = 30ms por paso
+    progressInterval = setInterval(() => {
+        if (loadingProgress.value < 100) {
+            loadingProgress.value += 1;
+        } else {
+            clearInterval(progressInterval);
+        }
+    }, 30);
+};
+
+onUnmounted(() => {
+    clearInterval(textInterval);
+    clearInterval(progressInterval);
+});
+
 onMounted(() => {
     form.value.token = route.query.token || '';
     form.value.email = route.query.email || '';
 });
 
 const handleReset = async () => {
-    // Validación básica frontend
     if (form.value.password !== form.value.password_confirmation) {
         status.value = 'mismatch';
         return;
     }
 
-    isLoading.value = true;
+    isSaving.value = true;
     status.value = '';
 
     try {
-        // CONEXIÓN CON LARAVEL
         await axios.post('http://127.0.0.1:8000/api/reset-password', form.value);
-
         status.value = 'success';
 
-        // Redirigir al login después de 3 segundos
+        // Iniciamos la barra de carga visual
+        startRedirection();
+
+        // Redirigimos al cabo de 3 segundos
         setTimeout(() => router.push('/login'), 3000);
 
     } catch (error) {
         status.value = 'error';
         console.error(error);
     } finally {
-        isLoading.value = false;
+        isSaving.value = false;
     }
 };
 </script>
@@ -74,17 +115,32 @@ const handleReset = async () => {
             <div class="p-8">
 
                 <div v-if="status === 'success'"
-                    class="mb-6 p-4 bg-green-50 text-green-800 rounded-xl border border-green-200 text-sm font-medium flex items-start gap-3">
-                    <svg class="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <span>¡Contraseña actualizada!<br>Redirigiendo al login en breve...</span>
+                    class="mb-6 p-6 bg-green-50 rounded-2xl border border-green-200 animate-fade-in-up text-center shadow-sm">
+                    <div
+                        class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600 shadow-inner">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-black text-gray-800 mb-1">¡Contraseña actualizada!</h3>
+                    <p class="text-sm text-gray-600 mb-6">Tu cuenta ahora está protegida.</p>
+
+                    <div class="text-left bg-white p-4 rounded-xl border border-green-100">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm font-bold text-agro-primary animate-pulse">{{ currentLoadingText
+                                }}</span>
+                            <span class="text-xs font-bold text-green-600">{{ loadingProgress }}%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden shadow-inner">
+                            <div class="bg-agro-primary h-full rounded-full transition-all duration-75 ease-linear"
+                                :style="{ width: loadingProgress + '%' }"></div>
+                        </div>
+                    </div>
                 </div>
 
                 <div v-if="status === 'error'"
-                    class="mb-6 p-4 bg-red-50 text-red-800 rounded-xl border border-red-200 text-sm font-medium flex items-start gap-3">
+                    class="mb-6 p-4 bg-red-50 text-red-800 rounded-xl border border-red-200 text-sm font-medium flex items-start gap-3 animate-shake">
                     <svg class="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -94,7 +150,7 @@ const handleReset = async () => {
                 </div>
 
                 <div v-if="status === 'mismatch'"
-                    class="mb-6 p-4 bg-yellow-50 text-yellow-800 rounded-xl border border-yellow-200 text-sm font-medium flex items-start gap-3">
+                    class="mb-6 p-4 bg-yellow-50 text-yellow-800 rounded-xl border border-yellow-200 text-sm font-medium flex items-start gap-3 animate-shake">
                     <svg class="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -105,61 +161,64 @@ const handleReset = async () => {
                 </div>
 
                 <form v-if="status !== 'success'" @submit.prevent="handleReset" class="space-y-5">
-
                     <input type="hidden" v-model="form.token">
 
-                    <div>
-                        <label class="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wide">Cuenta a
-                            recuperar</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                </svg>
+                    <div :class="{ 'opacity-50 pointer-events-none': isSaving }" class="space-y-5">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wide">Cuenta a
+                                recuperar</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <input v-model="form.email" disabled type="text"
+                                    class="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-500 font-medium cursor-not-allowed">
                             </div>
-                            <input v-model="form.email" disabled type="text"
-                                class="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-500 font-medium cursor-not-allowed">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Nueva Contraseña</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <input v-model="form.password" required type="password" placeholder="••••••••"
+                                    minlength="8" :disabled="isSaving"
+                                    class="w-full pl-11 pr-4 py-3.5 rounded-xl border border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-50 outline-none transition bg-white text-gray-700 disabled:bg-gray-50">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Confirmar Contraseña</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <input v-model="form.password_confirmation" required type="password"
+                                    placeholder="••••••••" minlength="8" :disabled="isSaving"
+                                    class="w-full pl-11 pr-4 py-3.5 rounded-xl border border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-50 outline-none transition bg-white text-gray-700 disabled:bg-gray-50">
+                            </div>
                         </div>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Nueva Contraseña</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                                    </path>
-                                </svg>
-                            </div>
-                            <input v-model="form.password" required type="password" placeholder="••••••••" minlength="8"
-                                class="w-full pl-11 pr-4 py-3.5 rounded-xl border border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-50 outline-none transition bg-white text-gray-700">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Confirmar Contraseña</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                                    </path>
-                                </svg>
-                            </div>
-                            <input v-model="form.password_confirmation" required type="password" placeholder="••••••••"
-                                minlength="8"
-                                class="w-full pl-11 pr-4 py-3.5 rounded-xl border border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-50 outline-none transition bg-white text-gray-700">
-                        </div>
-                    </div>
-
-                    <button type="submit" :disabled="isLoading"
-                        class="w-full bg-agro-primary text-white font-bold py-3.5 rounded-xl hover:bg-green-800 transition shadow-lg shadow-green-200/50 disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center gap-2 mt-2">
-                        <span v-if="isLoading" class="flex items-center gap-2">
+                    <button type="submit" :disabled="isSaving"
+                        class="w-full bg-agro-primary text-white font-bold py-3.5 rounded-xl hover:bg-green-800 transition shadow-lg shadow-green-200/50 flex justify-center items-center gap-2 mt-4">
+                        <span v-if="isSaving" class="flex items-center gap-2">
                             <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
@@ -174,7 +233,7 @@ const handleReset = async () => {
                     </button>
                 </form>
 
-                <div v-if="status === 'error'" class="text-center mt-6">
+                <div v-if="status === 'error' && !isSaving" class="text-center mt-6">
                     <router-link to="/login" class="text-sm font-bold text-gray-500 hover:text-agro-primary transition">
                         ← Volver al Login
                     </router-link>
