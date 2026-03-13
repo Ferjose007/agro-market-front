@@ -31,9 +31,11 @@ import logoUrl from '../../../assets/logo-agromarket.png';
                         <li><router-link to="/sellers"
                                 class="text-gray-400 hover:text-agro-secondary transition-colors inline-block hover:translate-x-1 duration-200">Nuestros
                                 Agricultores</router-link></li>
+                        <!--
                         <li><router-link to="/faq"
                                 class="text-gray-400 hover:text-agro-secondary transition-colors inline-block hover:translate-x-1 duration-200">Preguntas
                                 Frecuentes</router-link></li>
+                        -->
                         <li><router-link to="/register"
                                 class="text-gray-400 hover:text-agro-secondary transition-colors inline-block hover:translate-x-1 duration-200">Únete
                                 como Vendedor</router-link></li>

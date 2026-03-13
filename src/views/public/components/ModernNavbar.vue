@@ -71,7 +71,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll));
                         </svg>
                         Agricultores
                     </router-link>
-
+                    <!--
                     <router-link to="/faq"
                         :class="['px-4 py-2 rounded-full text-sm font-bold transition-all flex items-center gap-2',
                             shouldShowDark ? 'text-agro-primary-dark hover:bg-agro-cream hover:text-agro-primary' : 'text-white/90 hover:bg-white/10 hover:text-white']"
@@ -84,11 +84,10 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll));
                         </svg>
                         Ayuda
                     </router-link>
-
+                    -->
                     <router-link to="/contact"
-                        :class="['px-4 py-2 rounded-full text-sm font-bold transition-all flex items-center gap-2',
-                            shouldShowDark ? 'text-agro-primary-dark hover:bg-agro-cream hover:text-agro-primary' : 'text-white/90 hover:bg-white/10 hover:text-white']"
-                        active-class="!text-agro-primary bg-white shadow-sm hover:!bg-white hover:!text-agro-primary">
+                        :class="['px-4 py-2 rounded-full text-sm font-bold transition-all flex items-center gap-2', isScrolled ? 'text-agro-primary-dark hover:bg-agro-cream hover:text-agro-primary' : 'text-white/90 hover:bg-white/10 hover:text-white']"
+                        exact-active-class="!text-agro-primary bg-white shadow-sm">
 
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -259,10 +258,12 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll));
                     <router-link to="/" @click="isMenuOpen = false"
                         class="block px-4 py-3 rounded-xl font-bold text-gray-600 hover:bg-gray-50">🏠
                         Inicio</router-link>
+                    <!--
                     <router-link to="/faq" @click="isMenuOpen = false"
                         class="block px-4 py-3 rounded-xl font-bold text-gray-600 hover:bg-gray-50 flex items-center gap-3">
                         <span>❓</span> Ayuda / FAQ
                     </router-link>
+                    -->
                     <router-link to="/contact" @click="isMenuOpen = false"
                         class="block px-4 py-3 rounded-xl font-bold text-gray-600 hover:bg-gray-50 flex items-center gap-3">
                         <span>📞</span> Contacto
