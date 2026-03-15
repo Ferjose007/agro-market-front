@@ -31,3 +31,28 @@
     animation: bounce-short 0.5s ease-in-out 2;
     /* Rebota 2 veces y para */
 }
+
+/* Global Scrollbar Style */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #5C9816;
+    border-radius: 10px;
+    border: 2px solid #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3E7322;
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #5C9816 #f1f1f1;
+}
