@@ -3,6 +3,7 @@ import { useAuthStore } from '@/stores/auth';
 import FAQ from '@/views/public/FAQ.vue';
 import Contact from '@/views/public/Contact.vue';
 import ResetPassword from '../views/auth/ResetPassword.vue';
+import CheckoutSuccess from '../views/public/CheckoutSuccess.vue';
 
 const routes = [
     // --- RUTAS PÚBLICAS ---
@@ -44,10 +45,16 @@ const routes = [
         component: Contact
     },
     {
-        path: '/reset-password', // Laravel enviará el token como Query Param (?token=...)
+        path: '/reset-password',
         name: 'ResetPassword',
         component: ResetPassword,
         meta: { guest: true }
+    },
+    {
+        path: '/checkout-success',
+        name: 'CheckoutSuccess',
+        component: () => import('../views/public/CheckoutSuccess.vue'),
+        meta: { requiresAuth: true }
     },
     // --- ZONA CLIENTE (COMPRADOR) ---
     {
@@ -56,12 +63,12 @@ const routes = [
         meta: { requiresAuth: true },
         children: [
             {
-                path: 'profile', // Se accede como /client/profile
+                path: 'profile',
                 name: 'ClientProfile',
                 component: () => import('../views/client/Profile.vue')
             },
             {
-                path: 'orders', // Se accede como /client/orders
+                path: 'orders',
                 name: 'ClientOrders',
                 component: () => import('../views/client/Orders.vue')
             }
